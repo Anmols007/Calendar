@@ -164,10 +164,10 @@ style={
   {
     overlay: {
       position: 'fixed',
-      top: "100px",
+      top: "90px",
       left: "25%",
-      right: "40%",
-      bottom: "150px",
+      width:"470px",
+      height:"330px",
       backgroundColor:"rgba()",
       borderRadius:"50px !important"
     }
