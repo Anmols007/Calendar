@@ -1,5 +1,6 @@
 .background {
 background-color: #FBF6F0;
+padding-bottom: "20px";
 }
 
 .open{
@@ -11,13 +12,13 @@ background-color: #FBF6F0;
 }
 
 .booked{
-    background-color: #0ADE9D;
+    background-color: #3FD5A7;
 }
 
 .refresh{
 height: 15px;
 position: relative;
-left: 60%;
+left: 75%;
 bottom:15px;
 }
 

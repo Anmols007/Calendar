@@ -12,17 +12,16 @@ class Calendar extends React.Component{
 
 constructor(props){
   super(props);
-  this.state={currentData:{}};
 this.data=[
   {time:"8AM" , arr:[{state:"Blocked"
-  },{state:"Blocked"},{state:"Blocked"},{state:"Blocked"},{state:"Blocked"},{state:"Blocked"},{state:"Blocked"}] },
+  },{state:"Booked",data:"TimCook"},{state:"Blocked"},{state:"Booked",data:"TimCook"},{state:"Blocked"},{state:"Blocked"},{state:"Blocked"}] },
   
   {time:"9AM" , arr:[{state:"Blocked"
-  },{state:"open",data:"open"},{state:"open",data:"open"},{state:"open",data:"open"},{state:"Booked",data:"Anmol Sharma"},{state:"open"},{state:"open"}] },
+  },{state:"open",data:"open"},{state:"open",data:"open"},{state:"open",data:"open"},{state:"Booked",data:"Anmol"},{state:"open"},{state:"open"}] },
   
   
   {time:"10AM" , arr:[{state:"Blocked"
-  },{state:"open",data:"open"},{state:"open",data:"open"},{state:"open",data:"open"},{state:"Booked",data:"Debbi D"},{state:"Booked",data:"Anmol Sharma"},{state:"Booked",data:"Sarah"}] },
+  },{state:"open",data:"open"},{state:"open",data:"open"},{state:"open",data:"open"},{state:"Booked",data:"Debbi D"},{state:"Booked",data:"Anmol"},{state:"Booked",data:"Sarah"}] },
   
   
   {time:"11AM" , arr:[{state:"Blocked"
@@ -32,13 +31,16 @@ this.data=[
   {time:"12AM" , arr:[{state:"Blocked"
   },{state:"open",data:"open"},{state:"open",data:"open"},{state:"open",data:"open"},{state:"Booked",data:"John M"},{state:"Booked",data:"Shawn "},{state:"Booked",data:"Missy Taylor"}] },
   
-  {time:"1AM" , arr:[{state:"Blocked"
-  },{state:"open",data:"open"},{state:"open",data:"open"},{state:"open",data:"open"},{state:"Booked",data:"Steve Smith"},{state:"Booked",data:"Steve Smith"},{state:"Booked",data:"Justin Canetti"}] }
-  ]  
-}
-
-componentDidMount(){
-  this.setState({data:this.data});
+  {time:"1PM" , arr:[{state:"Blocked"
+  },{state:"open",data:"open"},{state:"open",data:"open"},{state:"open",data:"open"},{state:"Booked",data:"Steve Smith"},{state:"Booked",data:"Steve Smith"},{state:"Booked",data:"Justin"}] }
+  ]
+  this.days=["Sunday,March 29","Monday,March 30","Tuesday,March 31","Wednesday,April 1","Thursday,April 2","Friday,April 3","Saturday,April 4"];
+  this.time=["8am","9am","10am","11am","12am","1pm"]
+  
+  this.state={currentData:{},
+position:{},
+data:this.data
+};
 }
 
 dragS=(ev,index,innerindex)=>{
@@ -69,13 +71,14 @@ this.setState({data:slotState});
 
 render(){
 console.log(this.state,"state render")
+const{currentData,position} =this.state;
 
 return (
 <>
 <div className="background">
 <div className="content pt-8">
 <div className="flex mb-4">
-<p class="font-bold w-16 mt-4"></p>
+<p className="font-bold w-16 mt-4"></p>
     <div className="flex-1  mr-2   font-bold  text-center  mb-1 rounded-lg h-16">
         Sunday
       <p className="text-3xl ">  29</p>
@@ -112,18 +115,18 @@ return (
   </div>
   {this.state && this.state.data && this.state.data.map((el,index)=>{
 return (
-<div className="flex ">
-<p class="font-bold w-16 mt-4">{el.time}</p>
+<div className="flex " key={`${index}`}>
+<p className="font-bold w-16 mt-4">{el.time}</p>
 {el.arr.map((innerel,innerindex)=>{
-  return <div className="flex-1 h-18" draggable="true" 
+  return <div className="flex-1 h-18" key={`${index}-${innerindex}`} draggable="true" 
   onDragOver={(e)=>{e.preventDefault()}}
   onDrop={(ev)=>{this.drop(ev,index,innerindex)}}
   onDragStart={(e)=>{this.dragS(e,index,innerindex)}}> 
  {innerel.state=="Blocked" && <div 
  onClick={()=>{this.setState({open:true,currentData:innerel})}} 
  
-className=" border-solid border-2 mr-2 showslot text-gray-400   mb-1 rounded-lg ">
-  <p className="ml-2">{el.time}</p>
+className=" border-solid border-2 mr-2 showslot text-gray-400   mb-2 rounded-lg ">
+  <p className="ml-2 mt-2 text-xs lowercase">{el.time}</p>
   <p className="ml-2 mb-4">Blocked</p>
 
   </div> }
@@ -132,19 +135,19 @@ className=" border-solid border-2 mr-2 showslot text-gray-400   mb-1 rounded-lg 
     <div 
 
     onClick={()=>{this.setState({open:true,currentData:innerel})}}
-    className=" border-solid  showslot open border-2 mr-2  font-normal   mb-1 rounded-lg ">
-          <p className="ml-4 text-sm mt-2  text-blue-600">{el.time}</p>
-    <p className="ml-4 mb-4 text-base  text-indigo-400">Open</p>
+    className=" border-solid  showslot open border-2 mr-2  font-normal   mb-2 rounded-lg ">
+          <p className="ml-4 text-xs lowercase font-bold  mt-2  text-indigo-500">{el.time}</p>
+    <p className="ml-4 mb-4 font-medium  text-purple-400">Open</p>
 
     </div>}
     
  {innerel.state=="Booked" && 
     
     <div 
-    onClick={()=>{this.setState({open:true,currentData:innerel})}} 
-    className=" border-solid border-2 mr-2  booked showslot   mb-1 rounded-lg ">
-        <p className="ml-4 text-xs mt-2 pb-5    font-xs text-white h-4">{el.time} <img className="ml-4 refresh" src={refresh}/></p>
-<p className="ml-4 mb-6 text-xs  text-white font-xs">{innerel.data}</p>
+    onClick={()=>{this.setState({open:true,currentData:innerel,position:{index:index,inner:innerindex}})}} 
+    className=" border-solid border-2 mr-2  booked showslot   mb-2 rounded-lg ">
+        <p className="ml-4 text-xs mt-2 pb-5 lowercase  font-bold font-xs text-white h-4">{el.time} <img className=" refresh" src={refresh}/></p>
+<p className="ml-4 mb-4 text-sm font-medium  text-white font-xs">{innerel.data}</p>
     </div>
     }
   </div>
@@ -170,21 +173,21 @@ style={
     }
   }
 }>
-  <p onClick={()=>{this.setState({open:false})}}  className="ml-2 text-gray-400">x</p>
+  <p onClick={()=>{this.setState({open:false})}}  className="ml-2 text-gray-500">x</p>
   <div className="pl-8">
-  {  this.state.currentData.state=="Booked" &&
+  { currentData.state=="Booked" &&
   <>
-  <h2 className="font-bold text-2xl">Debbi D</h2>
-  <h6 className="font-bold mt-2 text-xs">Tuesday,March 31 at 10:00am </h6>
+  <h2 className="font-bold text-2xl">{currentData.data}</h2>
+<h6 className="font-bold mt-2 text-xs">{this.days[position.inner]}{' at '}{this.time[position.index]}</h6>
   <p><img className="mt-4" src={repeat}/></p>
 <br/>
 <span><img className="confirm" src={reschedule}/>
-  <img className="confirm" src={cancel}/></span>
+  <img onClick={()=>{this.setState({open:false})}} className="confirm" src={cancel}/></span>
   
 </>
  }
-{this.state.currentData.state!="Booked" &&
-  <h2 className="font-bold mt-12 text-2xl">Slot Is {this.state.currentData.state}!!!</h2>
+{currentData.state!="Booked" &&
+  <h2 className="font-bold mt-12 text-2xl">Slot Is {currentData.state}!!!</h2>
 
 }
   </div>
