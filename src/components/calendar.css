@@ -1,0 +1,39 @@
+.background {
+background-color: #FBF6F0;
+}
+
+.open{
+    background-color:#ECEFFF;
+    border-color: #F1D8FC;
+}
+.slot{
+    height:"100px !important"
+}
+
+.booked{
+    background-color: #0ADE9D;
+}
+
+.refresh{
+height: 15px;
+position: relative;
+left: 60%;
+bottom:15px;
+}
+
+.confirm{
+display: inline;
+}
+.border-radius-20{
+    border-radius: 20px;
+}
+
+.showslot:hover{
+    border:8px solid green;
+}
+
+.content{
+    width:75%;
+    margin: auto;
+    position: relative;
+}
